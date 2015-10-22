@@ -49,9 +49,21 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../ProNote/main.cpp \
-		../ProNote/mainwindow.cpp moc_mainwindow.cpp
+		../ProNote/mainwindow.cpp \
+		../ProNote/readorg.cpp \
+		../ProNote/writeorg.cpp \
+		../ProNote/encoding.cpp \
+		../ProNote/decoding.cpp \
+		../ProNote/decompression.cpp \
+		../ProNote/compression.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
+		readorg.o \
+		writeorg.o \
+		encoding.o \
+		decoding.o \
+		decompression.o \
+		compression.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
@@ -112,8 +124,20 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../ProNote/ProNote.pro ../ProNote/mainwindow.h ../ProNote/main.cpp \
-		../ProNote/mainwindow.cpp
+		../ProNote/ProNote.pro ../ProNote/mainwindow.h \
+		../ProNote/readorg.h \
+		../ProNote/writeorg.h \
+		../ProNote/encoding.h \
+		../ProNote/decoding.h \
+		../ProNote/decompression.h \
+		../ProNote/compression.h ../ProNote/main.cpp \
+		../ProNote/mainwindow.cpp \
+		../ProNote/readorg.cpp \
+		../ProNote/writeorg.cpp \
+		../ProNote/encoding.cpp \
+		../ProNote/decoding.cpp \
+		../ProNote/decompression.cpp \
+		../ProNote/compression.cpp
 QMAKE_TARGET  = ProNote
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = ProNote
@@ -285,8 +309,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../ProNote/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../ProNote/main.cpp ../ProNote/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../ProNote/mainwindow.h ../ProNote/readorg.h ../ProNote/writeorg.h ../ProNote/encoding.h ../ProNote/decoding.h ../ProNote/decompression.h ../ProNote/compression.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../ProNote/main.cpp ../ProNote/mainwindow.cpp ../ProNote/readorg.cpp ../ProNote/writeorg.cpp ../ProNote/encoding.cpp ../ProNote/decoding.cpp ../ProNote/decompression.cpp ../ProNote/compression.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../ProNote/mainwindow.ui $(DISTDIR)/
 
 
@@ -340,6 +364,24 @@ main.o: ../ProNote/main.cpp ../ProNote/mainwindow.h
 mainwindow.o: ../ProNote/mainwindow.cpp ../ProNote/mainwindow.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../ProNote/mainwindow.cpp
+
+readorg.o: ../ProNote/readorg.cpp ../ProNote/readorg.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o readorg.o ../ProNote/readorg.cpp
+
+writeorg.o: ../ProNote/writeorg.cpp ../ProNote/writeorg.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o writeorg.o ../ProNote/writeorg.cpp
+
+encoding.o: ../ProNote/encoding.cpp ../ProNote/encoding.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o encoding.o ../ProNote/encoding.cpp
+
+decoding.o: ../ProNote/decoding.cpp ../ProNote/decoding.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o decoding.o ../ProNote/decoding.cpp
+
+decompression.o: ../ProNote/decompression.cpp ../ProNote/decompression.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o decompression.o ../ProNote/decompression.cpp
+
+compression.o: ../ProNote/compression.cpp ../ProNote/compression.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o compression.o ../ProNote/compression.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

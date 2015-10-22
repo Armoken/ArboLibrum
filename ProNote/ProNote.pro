@@ -13,8 +13,22 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    readorg.cpp \
+    writeorg.cpp \
+    encoding.cpp \
+    decoding.cpp \
+    decompression.cpp \
+    note.cpp \
+    compression.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    readorg.h \
+    writeorg.h \
+    encoding.h \
+    decoding.h \
+    decompression.h \
+    note.h \
+    compression.h
 
 FORMS    += mainwindow.ui
