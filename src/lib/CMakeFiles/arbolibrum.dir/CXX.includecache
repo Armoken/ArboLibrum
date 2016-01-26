@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/all/Projects/Arbolibrum/src/lib/src/compression.cpp
+compression.h
+/mnt/all/Projects/Arbolibrum/src/lib/src/compression.h
+
+/mnt/all/Projects/Arbolibrum/src/lib/src/decompression.cpp
+decompression.h
+/mnt/all/Projects/Arbolibrum/src/lib/src/decompression.h
+
+/mnt/all/Projects/Arbolibrum/src/lib/src/encryption.cpp
+encryption.h
+/mnt/all/Projects/Arbolibrum/src/lib/src/encryption.h
+
+/mnt/all/Projects/Arbolibrum/src/lib/src/note.cpp
+note.h
+/mnt/all/Projects/Arbolibrum/src/lib/src/note.h
+
+/mnt/all/Projects/Arbolibrum/src/lib/src/readorg.cpp
+readorg.h
+/mnt/all/Projects/Arbolibrum/src/lib/src/readorg.h
+
+/mnt/all/Projects/Arbolibrum/src/lib/src/writeorg.cpp
+writeorg.h
+/mnt/all/Projects/Arbolibrum/src/lib/src/writeorg.h
+
+src/lib/include/compression.h
+
+src/lib/include/decompression.h
+
+src/lib/include/encryption.h
+
+src/lib/include/note.h
+
+src/lib/include/readorg.h
+
+src/lib/include/writeorg.h
+
