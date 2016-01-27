@@ -11,6 +11,10 @@ Note::Note(string _path, types _noteType) {
 	noteType = _noteType;
 }
 
+Note::~Note() {
+	delete this;
+}
+
 bool Note::setTitle(string _title) {
 	if (_title != "") {
 		title = _title;
@@ -41,6 +45,16 @@ void Note::addNote(string _title, string _path, types _noteKind) {
 	notes.push_back(newNote);
 }
 
+void Note::removeNote() {
+	const char* filename = this->path.c_str();
+	remove(filename);
+	this->~Note();
+}
+
+Note* Note::getNote(int _number) {
+	return notes[_number];
+}
+
 //Maybe will be relocated to read/write classes
 void Note::loadContent(Note* &note) {
 	if (note->noteType == types::text || types::root) {
@@ -53,11 +67,20 @@ void Note::loadContent(Note* &note) {
 	}
 }
 
+void Note::showNote(Note* &note) {
+	cout << "Title: " << note->getTitle() << endl << endl << "Content:" << endl << endl;
+	Note::loadContent(note);
+	cout << "-------------------------------" << endl;
+}
+
 int main() {
 	Note* note = new Note("c:\\1.txt", Note::types::root);
 	note->setTitle("NOTTTTEE");
-	note->addNote("KEK", "", Note::types::text);
-	cout << "Title: " << note->getTitle() << endl << endl << "Content:" << endl << endl;
-	Note::loadContent(note);
+	note->addNote("KEK", "c:\\2.txt", Note::types::text);
+	Note::showNote(note);
+	Note* newNote = note->getNote(0);
+	Note::showNote(newNote);
+	note->removeNote();
+	Note::showNote(note);
 	return 0;
 }

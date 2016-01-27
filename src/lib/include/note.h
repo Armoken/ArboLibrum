@@ -24,12 +24,16 @@ public:
 		pic = 3
 	};
 	Note(string _path, types _noteType);
+	~Note();
 	bool setTitle(string _title);
 	string getTitle();
 	bool setPath(string _path);
 	string getPath();
 	int getType();
+	Note* getNote(int _number);
 	void addNote(string _title, string _path, types _noteKind);
+	void removeNote();
 	static void loadContent(Note* &note);
+	static void showNote(Note* &note);
 };
 #endif // NOTE_H
