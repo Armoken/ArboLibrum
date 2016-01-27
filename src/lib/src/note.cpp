@@ -1,7 +1,3 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <vector>
 #include "note.h"
 
 using namespace std;
@@ -39,6 +35,10 @@ string Note::getPath() {
 	return path;
 }
 
+Note::types Note::getType() {
+	return (Note::types)this->noteType;
+}
+
 void Note::addNote(string _title, string _path, types _noteKind) {
 	Note* newNote = new Note(_path, _noteKind);
 	newNote->setTitle(_title);
@@ -55,32 +55,10 @@ Note* Note::getNote(int _number) {
 	return notes[_number];
 }
 
-//Maybe will be relocated to read/write classes
-void Note::loadContent(Note* &note) {
-	if (note->noteType == types::text || types::root) {
-		ifstream in(note->path);
-		string s, line;
-		while (getline(in, line)) {
-			s += line + "\n";
-		}
-		cout << s;
-	}
-}
-
-void Note::showNote(Note* &note) {
-	cout << "Title: " << note->getTitle() << endl << endl << "Content:" << endl << endl;
-	Note::loadContent(note);
-	cout << "-------------------------------" << endl;
-}
-
 int main() {
 	Note* note = new Note("c:\\1.txt", Note::types::root);
 	note->setTitle("NOTTTTEE");
 	note->addNote("KEK", "c:\\2.txt", Note::types::text);
-	Note::showNote(note);
 	Note* newNote = note->getNote(0);
-	Note::showNote(newNote);
-	note->removeNote();
-	Note::showNote(note);
 	return 0;
 }

@@ -1,6 +1,9 @@
 #ifndef NOTE_H
 #define NOTE_H
+
 #include <iostream>
+#include <string>
+#include <fstream>
 #include <vector>
 
 using namespace std;
@@ -29,7 +32,7 @@ public:
 	string getTitle();
 	bool setPath(string _path);
 	string getPath();
-	int getType();
+	types getType();
 	Note* getNote(int _number);
 	void addNote(string _title, string _path, types _noteKind);
 	void removeNote();
