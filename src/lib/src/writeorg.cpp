@@ -1,23 +1,24 @@
-#include "writeorg.h"
+#include "../include/writeorg.h"
 
-void WriteOrg::writeNote(Note* &note) {
+void WriteOrg::writeNote(Note* &note) {}
 
-}
+string WriteOrg::loadContent(Note* &note)
+{
+  string content = "";
 
-string WriteOrg::loadContent(Note* &note) {
-	string content = "";
+  if (note-> getType() == Note::text)
+	{
+	  ifstream in(note->getPath().c_str());
+	  string line;
 
-	if (note->getType() == Note::types::text) {
-		ifstream in(note->getPath());
-		string line;
-
-		while (getline(in, line))
+	  while (getline(in, line))
 		{
-			content += line + "\n";
+		  content += line + "\n";
 		}
 	}
-	else if (note->getType() == Note::types::pic) {
-		content = note->getPath();
+  else if (note->getType() == Note::pic)
+	{
+	  content = note->getPath();
 	}
-	return content;
+  return content;
 }
