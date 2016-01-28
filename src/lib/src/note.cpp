@@ -46,9 +46,9 @@ void Note::addNote(string _title, string _path, types _noteKind) {
 }
 
 void Note::removeNote() {
-	const char* filename = this->path.c_str();
-	remove(filename);
+	remove(this->path.c_str());
 	this->~Note();
+
 }
 
 Note* Note::getNote(int _number) {
