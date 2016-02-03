@@ -4,64 +4,70 @@ using namespace std;
 
 Note::Note(string _path, types _noteType)
 {
-  path = _path;
-  noteType = _noteType;
+	path = _path;
+	noteType = _noteType;
 }
 
 Note::~Note()
 {
-  delete this;
+//	if (this != NULL)
+//		delete this;
 }
 
 bool Note::setTitle(string _title)
 {
-  if (_title != "")
+	if (_title != "")
 	{
-	  title = _title;
-	  return true;
+		title = _title;
+		return true;
 	}
-  return false;
+	return false;
 }
 
 string Note::getTitle()
 {
-  return title;
+	return title;
 }
 
 bool Note::setPath(string _path)
 {
-  if (_path != "")
+	if (_path != "")
 	{
-	  path = _path;
-	  return true;
+		path = _path;
+		return true;
 	}
-  return false;
+	return false;
 }
 
 string Note::getPath()
 {
-  return path;
+	return path;
 }
 
 Note::types Note::getType()
 {
-  return (Note::types)this->noteType;
+	return (Note::types)this->noteType;
 }
 
 void Note::addNote(string _title, string _path, types _noteKind)
 {
-  Note* newNote = new Note(_path, _noteKind);
-  newNote->setTitle(_title);
-  notes.push_back(newNote);
+	Note* newNote = new Note(_path, _noteKind);
+	newNote->setTitle(_title);
+	notes.push_back(newNote);
+}
+
+void Note::addNote(Note* newNote)
+{
+	notes.push_back(newNote);
 }
 
 void Note::removeNote()
 {
-  remove(this->path.c_str());
-  this->~Note();
+	remove(this->path.c_str());
+	this->~Note();
 }
 
 Note* Note::getNote(int _number)
 {
-  return notes[_number];
+	return notes[_number];
 }
