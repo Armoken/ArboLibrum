@@ -7,7 +7,7 @@ void WriteOrg::writeNote(Note* note) {
 		ofstream out(filename, ios_base::trunc);
 
 		string level = "*";
-		out << level << note->getTitle() << endl;
+		out << level << " " << note->getTitle() << endl;
 		if (note->notes.size() != 0)
 		{
 			write(note, filename, level);
@@ -22,7 +22,7 @@ void WriteOrg::write(Note* note, string filename, string level)
 	level += "*";
 	for (int i = 0; i < note->notes.size(); i++)
 	{
-		out << level << note->notes[i]->getTitle() << endl;
+		out << level << " " << note->notes[i]->getTitle() << endl;
 		string content = WriteOrg::loadContent(note->notes[i]);
 		out << content << endl;
 		if (note->notes[i]->notes.size() != 0)
