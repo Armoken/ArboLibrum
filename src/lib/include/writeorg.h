@@ -10,8 +10,9 @@ using namespace std;
 class WriteOrg
 {
  public:
-  static void writeNote(Note* &note);
-  static string loadContent(Note* &note);
+  static void writeNote(Note* note);
+  static void write(Note* note, string filename, string level);
+  static string loadContent(Note* note);
 };
 
 #endif // WRITEORG_H

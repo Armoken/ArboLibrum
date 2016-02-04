@@ -1,4 +1,4 @@
-#include "decryption.h"
+#include "../include/decryption.h"
 
 decryption::decryption()
 {

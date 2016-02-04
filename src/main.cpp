@@ -54,6 +54,7 @@ vector<int> parseTextPath(string textPath)
 			break;
 		}
 	}
+	return numPath;
 }
 
 int main() /* Pseudo UI */
