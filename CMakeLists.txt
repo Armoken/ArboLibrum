@@ -3,6 +3,7 @@ set (PROJECT arbolibrum)
 project (ArboLibrum)
 
 set (REQUIRED_LIBRARIES arbolibrum)
+set (CMAKE_CXX_FLAGS "-std=c++11")
 
 set (SOURCE_EXE src/main.cpp)
 include_directories (src/lib

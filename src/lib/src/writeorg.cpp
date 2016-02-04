@@ -4,21 +4,21 @@ void WriteOrg::writeNote(Note* &note) {}
 
 string WriteOrg::loadContent(Note* &note)
 {
-  string content = "";
+	string content = "";
 
-  if (note-> getType() == Note::text)
+	if (note-> getType() == tText)
 	{
-	  ifstream in(note->getPath().c_str());
-	  string line;
+		ifstream in(note->getPath().c_str());
+		string line;
 
-	  while (getline(in, line))
+		while (getline(in, line))
 		{
-		  content += line + "\n";
+			content += line + "\n";
 		}
 	}
-  else if (note->getType() == Note::pic)
+	else if (note->getType() == tPicture)
 	{
-	  content = note->getPath();
+		content = note->getPath();
 	}
-  return content;
+	return content;
 }
