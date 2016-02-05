@@ -28,9 +28,9 @@ int treeTravel (Note *rootNote, int level)
 	return 0;
 }
 
-vector<int> parseTextPath(string textPath)
+list<int> parseTextPath(string textPath)
 {
-	vector<int> numPath;
+	list<int> numPath;
 	int convertedEl;
     string buf; // Have a buffer string
     stringstream iss(textPath); // Insert the string into a stream
@@ -54,6 +54,7 @@ vector<int> parseTextPath(string textPath)
 			break;
 		}
 	}
+	return numPath;
 }
 
 int main() /* Pseudo UI */
@@ -73,7 +74,9 @@ int main() /* Pseudo UI */
 		cin >> selection;
 		string filename;
 		string textPath;
-		vector<int> path;
+		string textSelectedElement;
+		int selectedElement;
+		list<int> path;
 		switch (selection)
 		{
 		case 0:
@@ -99,9 +102,21 @@ int main() /* Pseudo UI */
 			rootNote->addNote("bimbom", tRoot, path);
 			break;
 		case 4:
-			cout << "Please, enter path to note to delete: ";
+			cout << "Please, enter path to note and number of element to delete: ";
 			cin.ignore();
 			getline(cin, textPath);
+			path = parseTextPath(textPath);
+			getline(cin, textSelectedElement);
+			try
+			{
+				selectedElement = stoi(textSelectedElement);
+			}
+			catch (invalid_argument &x)
+			{
+				cout << "Cant convert!" << endl;
+				break;
+			}
+			rootNote->removeNote(selectedElement, path);
 			break;
 		case 5:
 			if (rootNote != NULL)

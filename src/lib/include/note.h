@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <list>
 
 using namespace std;
 
@@ -47,15 +48,13 @@ class Note
   /* Add new note to inner array. The _path to the Note is an array of int, which show position of Note in notes array. */
   void addNote(string _text, NoteTypes _noteType);
   void addNote(string _text, string _path, NoteTypes _noteType);
-  void addNote(string _text, NoteTypes _noteType, vector<int> _pathToNote);
-  void addNote(string _text, string _path, NoteTypes _noteType, vector<int> _pathToNote);
+  void addNote(string _text, NoteTypes _noteType, list<int> _pathToNote);
+  void addNote(string _text, string _path, NoteTypes _noteType, list<int> _pathToNote);
 
   Note* getNote(int _number); /*Get note from inner array by it's number*/
-  Note* getNote(int _number, vector<int> _pathToNote);
+  Note* getNote(int _number, list<int> _pathToNote);
 
-  void removeNote(); /*Remove current note and additional content file*/
-
-  static void loadContent(Note* &note); /*Load content from file into note*/
-  static void showNote(Note* &note); /*Print title and content (for debugging)*/
+  void removeNote(int _number); /*Remove current note and additional content file*/
+  void removeNote(int _number, list<int> _pathToNote);
 };
 #endif // NOTE_H

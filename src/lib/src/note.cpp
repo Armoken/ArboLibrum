@@ -10,6 +10,10 @@ Note::Note(string _text, NoteTypes _noteType)
 
 Note::~Note()
 {
+	if (notes.size() != 0)
+	{
+		notes.clear();
+	}
 	delete this;
 }
 
@@ -70,12 +74,12 @@ void Note::addNote(string _text, string _path, NoteTypes _noteType)
 	notes.push_back(newNote);
 }
 
-void Note::addNote(string _text, NoteTypes _noteType, vector<int> _pathToNote)
+void Note::addNote(string _text, NoteTypes _noteType, list<int> _pathToNote)
 {
 	if (_pathToNote.size() != 0)
 	{
-		int firstNodeOfPath = _pathToNote[0];
-		_pathToNote.erase(_pathToNote.begin());
+		int firstNodeOfPath = _pathToNote.front();
+		_pathToNote.pop_front();
 		notes[firstNodeOfPath]->addNote(_text, _noteType, _pathToNote);
 	}
 	else
@@ -84,14 +88,19 @@ void Note::addNote(string _text, NoteTypes _noteType, vector<int> _pathToNote)
 	}
 }
 
-void Note::addNote(string _text, string _path, NoteTypes _noteType, vector<int> _pathToNote)
+void Note::addNote(string _text, string _path, NoteTypes _noteType, list<int> _pathToNote)
 {
-	Note *nodeForNote = this;
-	for (int i = 0; i < _pathToNote.size(); i++)
+	if (_pathToNote.size() != 0)
 	{
-		nodeForNote = nodeForNote->getNote(_pathToNote[i]);
+		int firstNodeOfPath = _pathToNote.front();
+		_pathToNote.pop_front();
+		notes[firstNodeOfPath]->addNote(_text, _path, _noteType, _pathToNote);
 	}
-	nodeForNote->addNote(_text, _path, _noteType);
+	else
+	{
+		notes.push_back(new Note(_text, _noteType));
+		notes.back()->setPath(_path);
+	}
 }
 
 
@@ -102,18 +111,35 @@ Note* Note::getNote(int _number)
 	return notes[_number];
 }
 
-Note* Note::getNote(int _number, vector<int> _pathToNote)
+Note* Note::getNote(int _number, list<int> _pathToNote)
 {
-	Note *returnNote = this;
-	for (int i = 0; i < _pathToNote.size(); i++)
+	if (_pathToNote.size() == 0)
 	{
-		returnNote = returnNote->getNote(_pathToNote[i]);
+		return notes[_number];
 	}
-	return returnNote;
+	else
+	{
+		int firstNodeOfPath = _pathToNote.front();
+		_pathToNote.pop_front();
+		return notes[firstNodeOfPath]->getNote(_number, _pathToNote);
+	}
 }
 
-void Note::removeNote()
+void Note::removeNote(int _number)
 {
-	remove(this->path.c_str());
-	this->~Note();
+	notes.erase(notes.begin() + _number);
+}
+
+void Note::removeNote(int _number, list<int> _pathToNote)
+{
+	if (_pathToNote.size() == 0)
+	{
+		notes.erase(notes.begin() + _number);
+	}
+	else
+	{
+		int firstNodeOfPath = _pathToNote.front();
+		_pathToNote.pop_front();
+		notes[firstNodeOfPath]->removeNote(_number, _pathToNote);
+	}
 }
