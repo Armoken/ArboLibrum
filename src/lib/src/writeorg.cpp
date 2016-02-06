@@ -20,6 +20,7 @@ void WriteOrg::write(Note* note, string filename, string level)
 {
 	ofstream out(filename, ios_base::app);
 	level += "*";
+
 	for (int i = 0; i < note->getCount(); i++)
 	{
 		out << level << " " << note->getNote(i)->getText() << endl;
@@ -37,7 +38,7 @@ string WriteOrg::loadContent(Note* note)
 {
 	string content = "";
 
-	if (note-> getType() == tText)
+	if (note->getType() == tText)
 	{
 		ifstream in(note->getPath().c_str());
 		string line;

@@ -25,9 +25,10 @@ class Note
   NoteTypes noteType;  /*Meaning of the text block*/
   bool checkState; /* State for checkbox */
   Note* parentNote; /*Reference to a parent note*/
-  vector<Note*> notes; /*Array of notes*/
 
  public:
+  vector<Note*> notes; /*Array of notes*/
+
   Note(string _text, NoteTypes _noteType);
   ~Note();
 
@@ -36,7 +37,7 @@ class Note
 	return notes[i];
   }
 
-  bool setText(string _title);
+  bool setText(string _text);
   string getText();
 
   bool setPath(string _path);
