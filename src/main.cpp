@@ -6,6 +6,7 @@
 #include <list>
 #include <stdexcept>
 #include "lib/include/note.h"
+#include "lib/include/writeorg.h"
 
 using namespace std;
 
@@ -65,11 +66,12 @@ int main() /* Pseudo UI */
 	{
 		int selection;
 		cout << "0) Quit" << endl;
-		cout << "1) Create note file" << endl;
-		cout << "2) Rename file" << endl;
+		cout << "1) Create note" << endl;
+		cout << "2) Rename note" << endl;
 		cout << "3) Create new node" << endl;
 		cout << "4) Delete node" << endl;
 		cout << "5) Show all notes" << endl;
+		cout << "6) Save note to file" << endl;
 
 		cin >> selection;
 		string filename;
@@ -127,6 +129,9 @@ int main() /* Pseudo UI */
 			{
 				cout << "Please, create file for note!";
 			}
+			break;
+		case 6:
+			WriteOrg::writeNote(rootNote);
 			break;
 		}
 	}

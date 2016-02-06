@@ -19,6 +19,7 @@ Note::~Note()
 
 bool Note::setText(string _text)
 {
+
 	if (_text != "")
 	{
 		text = _text;
@@ -29,18 +30,16 @@ bool Note::setText(string _text)
 
 string Note::getText()
 {
+
 	return text;
 }
 
 bool Note::setPath(string _path)
 {
-	if (noteType != tRoot || noteType != tText)
+	if (_path != "")
 	{
-		if (_path != "")
-		{
-			path = _path;
-			return true;
-		}
+		path = _path;
+		return true;
 	}
 	return false;
 }
@@ -102,7 +101,6 @@ void Note::addNote(string _text, string _path, NoteTypes _noteType, list<int> _p
 		notes.back()->setPath(_path);
 	}
 }
-
 
 
 
