@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int treeTravel (Note *rootNote, int level)
+int treeTravel(Note* rootNote, int level)
 {
 	int elCount = rootNote->getCount();
 	if (level == 0)
@@ -33,13 +33,13 @@ list<int> parseTextPath(string textPath)
 {
 	list<int> numPath;
 	int convertedEl;
-    string buf; // Have a buffer string
-    stringstream iss(textPath); // Insert the string into a stream
-    vector<string> tokens; // Create vector to hold our words
+	string buf; // Have a buffer string
+	stringstream iss(textPath); // Insert the string into a stream
+	vector<string> tokens; // Create vector to hold our words
 
-    while (iss >> buf)
+	while (iss >> buf)
 	{
-        tokens.push_back(buf);
+		tokens.push_back(buf);
 	}
 
 	for (int i = 0; i < tokens.size(); i++)
@@ -60,7 +60,7 @@ list<int> parseTextPath(string textPath)
 
 int main() /* Pseudo UI */
 {
-	Note *rootNote;
+	Note* rootNote;
 	bool isAlive = true;
 	while (isAlive)
 	{
@@ -74,6 +74,7 @@ int main() /* Pseudo UI */
 		cout << "6) Save note to file" << endl;
 
 		cin >> selection;
+		string name;
 		string filename;
 		string textPath;
 		string textSelectedElement;
@@ -85,16 +86,20 @@ int main() /* Pseudo UI */
 			isAlive = false;
 			break;
 		case 1:
-			cout << "Please, enter filename: ";
+			cout << "Please, enter name: ";
 			cin.ignore();
-			getline(cin, filename);
-			rootNote = new Note(filename, tRoot);
+			getline(cin, name);
+			rootNote = new Note(name, tRoot);
+			filename = name + ".txt";
+			rootNote->setPath(filename);
 			break;
 		case 2:
 			cout << "Please, enter new filename: ";
 			cin.ignore();
-			getline(cin, filename);
-			rootNote->setText(filename);
+			getline(cin, name);
+			rootNote->setText(name);
+			filename = name + ".txt";
+			rootNote->setPath(filename);
 			break;
 		case 3:
 			cout << "Please, enter path to new note: ";

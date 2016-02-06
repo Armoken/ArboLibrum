@@ -3,7 +3,7 @@
 void WriteOrg::writeNote(Note* note) {
 	if (note != NULL && note->getType() == tRoot)
 	{
-		string filename = note->getText();
+		string filename = note->getPath();
 		ofstream out(filename, ios_base::trunc);
 
 		string level = "*";
@@ -19,13 +19,15 @@ void WriteOrg::writeNote(Note* note) {
 void WriteOrg::write(Note* note, string filename, string level)
 {
 	ofstream out(filename, ios_base::app);
+	string text = "";
 	level += "*";
 
 	for (int i = 0; i < note->getCount(); i++)
 	{
-		out << level << " " << note->getNote(i)->getText() << endl;
+		text = note->getNote(i)->getText();
+		out << level << " " << text << endl;
 		string content = WriteOrg::loadContent(note->getNote(i));
-		out << content << endl;
+		out << content;
 		if (note->getNote(i)->getCount() != 0)
 		{
 			WriteOrg::write(note->getNote(i), filename, level);
@@ -40,13 +42,7 @@ string WriteOrg::loadContent(Note* note)
 
 	if (note->getType() == tText)
 	{
-		ifstream in(note->getPath().c_str());
-		string line;
-
-		while (getline(in, line))
-		{
-			content += line + "\n";
-		}
+		content = "";
 	}
 	else if (note->getType() == tPicture)
 	{
