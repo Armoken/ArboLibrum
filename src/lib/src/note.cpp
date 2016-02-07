@@ -19,7 +19,6 @@ Note::~Note()
 
 bool Note::setText(string _text)
 {
-
 	if (_text != "")
 	{
 		text = _text;
@@ -61,44 +60,63 @@ NoteTypes Note::getType()
 
 
 
-void Note::addNote(string _text, NoteTypes _noteType)
+bool Note::addNote(string _text, NoteTypes _noteType)
 {
 	notes.push_back(new Note(_text, _noteType));
+	return true;
 }
 
-void Note::addNote(string _text, string _path, NoteTypes _noteType)
+bool Note::addNote(string _text, string _path, NoteTypes _noteType)
 {
 	Note* newNote = new Note(_text, _noteType);
-	newNote->setText(_path);
+	newNote->setPath(_path);
 	notes.push_back(newNote);
+	return true;
 }
 
-void Note::addNote(string _text, NoteTypes _noteType, list<int> _pathToNote)
+bool Note::addNote(string _text, NoteTypes _noteType, list<int> _pathToNote)
 {
-	if (_pathToNote.size() != 0)
-	{
-		int firstNodeOfPath = _pathToNote.front();
-		_pathToNote.pop_front();
-		notes[firstNodeOfPath]->addNote(_text, _noteType, _pathToNote);
-	}
-	else
+
+	if (_pathToNote.size() == 0)
 	{
 		notes.push_back(new Note(_text, _noteType));
+		return true;
 	}
-}
-
-void Note::addNote(string _text, string _path, NoteTypes _noteType, list<int> _pathToNote)
-{
-	if (_pathToNote.size() != 0)
+	else
 	{
 		int firstNodeOfPath = _pathToNote.front();
 		_pathToNote.pop_front();
-		notes[firstNodeOfPath]->addNote(_text, _path, _noteType, _pathToNote);
+		if ((int)notes.size() - 1 < firstNodeOfPath) // Compare number of last element of array with number of node of path
+		{
+			return false;
+		}
+		else
+		{
+			return notes[firstNodeOfPath]->addNote(_text, _noteType, _pathToNote);
+		}
 	}
-	else
+}
+
+bool Note::addNote(string _text, string _path, NoteTypes _noteType, list<int> _pathToNote)
+{
+	if (_pathToNote.size() != 0)
 	{
 		notes.push_back(new Note(_text, _noteType));
 		notes.back()->setPath(_path);
+		return true;
+	}
+	else
+	{
+		int firstNodeOfPath = _pathToNote.front();
+		_pathToNote.pop_front();
+		if ((int)notes.size() - 1 < firstNodeOfPath)
+		{
+			return false;
+		}
+		else
+		{
+			return notes[firstNodeOfPath]->addNote(_text, _path, _noteType, _pathToNote);
+		}
 	}
 }
 
@@ -119,25 +137,47 @@ Note* Note::getNote(int _number, list<int> _pathToNote)
 	{
 		int firstNodeOfPath = _pathToNote.front();
 		_pathToNote.pop_front();
-		return notes[firstNodeOfPath]->getNote(_number, _pathToNote);
+		if ((int)notes.size() - 1 < firstNodeOfPath)
+		{
+			return NULL;
+		}
+		else
+		{
+			return notes[firstNodeOfPath]->getNote(_number, _pathToNote);
+		}
 	}
 }
 
-void Note::removeNote(int _number)
+bool Note::removeNote(int _number)
 {
-	notes.erase(notes.begin() + _number);
+	if ((int)notes.size() - 1 < _number)
+	{
+		return false;
+	}
+	else
+	{
+		notes.erase(notes.begin() + _number);
+		return true;
+	}
 }
 
-void Note::removeNote(int _number, list<int> _pathToNote)
+bool Note::removeNote(int _number, list<int> _pathToNote)
 {
 	if (_pathToNote.size() == 0)
 	{
-		notes.erase(notes.begin() + _number);
+		return removeNote(_number);
 	}
 	else
 	{
 		int firstNodeOfPath = _pathToNote.front();
 		_pathToNote.pop_front();
-		notes[firstNodeOfPath]->removeNote(_number, _pathToNote);
+		if ((int)notes.size() - 1 < firstNodeOfPath)
+		{
+			return false;
+		}
+		else
+		{
+			return notes[firstNodeOfPath]->removeNote(_number, _pathToNote);
+		}
 	}
 }

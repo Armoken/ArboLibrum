@@ -47,15 +47,15 @@ class Note
   NoteTypes getType(); /*Get type of current note*/
 
   /* Add new note to inner array. The _path to the Note is an array of int, which show position of Note in notes array. */
-  void addNote(string _text, NoteTypes _noteType);
-  void addNote(string _text, string _path, NoteTypes _noteType);
-  void addNote(string _text, NoteTypes _noteType, list<int> _pathToNote);
-  void addNote(string _text, string _path, NoteTypes _noteType, list<int> _pathToNote);
+  bool addNote(string _text, NoteTypes _noteType);
+  bool addNote(string _text, string _path, NoteTypes _noteType);
+  bool addNote(string _text, NoteTypes _noteType, list<int> _pathToNote);
+  bool addNote(string _text, string _path, NoteTypes _noteType, list<int> _pathToNote);
 
   Note* getNote(int _number); /*Get note from inner array by it's number*/
   Note* getNote(int _number, list<int> _pathToNote);
 
-  void removeNote(int _number); /*Remove current note and additional content file*/
-  void removeNote(int _number, list<int> _pathToNote);
+  bool removeNote(int _number); /*Remove current note and additional content file*/
+  bool removeNote(int _number, list<int> _pathToNote);
 };
 #endif // NOTE_H
