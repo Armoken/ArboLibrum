@@ -60,15 +60,9 @@ list<int> parseTextPath(string textPath)
 
 int main() /* Pseudo UI */
 {
-	Note* testNote;
-	if (testNote == NULL)
-	{
-		cout << "aksd" << endl;
-	}
-
 	Note* rootNote;
-	bool isInit = false;
 	bool isAlive = true;
+	bool isInit = false;
 	while (isAlive)
 	{
 		int selection;
@@ -89,6 +83,7 @@ int main() /* Pseudo UI */
 		cout << "\n" << endl;
 
 		cin >> selection;
+
 		string name;
 		string textPath;
 		string textSelectedElement;
