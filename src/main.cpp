@@ -1,3 +1,15 @@
+﻿/*****************************************************************************************************
+
+███████████████████████████████████████████████████
+█────█────█────██────█─███───█────██────█─█─█─███─█
+█─██─█─██─█─██──█─██─█─████─██─██──█─██─█─█─█──█──█
+█────█────█────██─██─█─████─██────██────█─█─█─█─█─█
+█─██─█─█─██─██──█─██─█─████─██─██──█─█─██─█─█─███─█
+█─██─█─█─██────██────█───█───█────██─█─██───█─███─█  
+███████████████████████████████████████████████████  (c) ArboLibrum, 2016. All rights reserved.
+
+*****************************************************************************************************/
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -9,6 +21,8 @@
 #include "lib/include/writeorg.h"
 
 using namespace std;
+
+//****************************************************************************************************
 
 int treeTravel(Note* rootNote, int level)
 {
@@ -28,6 +42,8 @@ int treeTravel(Note* rootNote, int level)
 	}
 	return 0;
 }
+
+//****************************************************************************************************
 
 list<int> parseTextPath(string textPath)
 {
@@ -58,6 +74,8 @@ list<int> parseTextPath(string textPath)
 	return numPath;
 }
 
+//****************************************************************************************************
+
 int main() /* Pseudo UI */
 {
 	Note* rootNote;
@@ -85,6 +103,7 @@ int main() /* Pseudo UI */
 		cin >> selection;
 
 		string name;
+		string filename;
 		string textPath;
 		string textSelectedElement;
 		int selectedElement;
@@ -101,6 +120,8 @@ int main() /* Pseudo UI */
 				cin.ignore();
 				getline(cin, name);
 				rootNote = new Note(name, tRoot);
+				filename = name + ".org";
+				rootNote->setPath(filename);
 				isInit = true;
 			}
 			else
@@ -115,6 +136,8 @@ int main() /* Pseudo UI */
 				cin.ignore();
 				getline(cin, name);
 				rootNote->setText(name);
+				filename = name + ".org";
+				rootNote->setPath(filename);
 			}
 			else
 			{
@@ -128,7 +151,7 @@ int main() /* Pseudo UI */
 				cin.ignore();
 				getline(cin, textPath);
 				path = parseTextPath(textPath);
-				if (!rootNote->addNote("bimbom", tRoot, path))
+				if (!rootNote->addNote("This is example of text for testing work of the NEW STEP in world's notes editor direction!\nTRY AND ENJOY IT!!!\n________ArboLibrum________\n...\nIt's goddamn cool!", tText, path))
 				{
 					cout << "Wrong path!" << endl;
 				}
@@ -181,3 +204,5 @@ int main() /* Pseudo UI */
 	}
 	return 0;
 }
+
+//****************************************************************************************************
