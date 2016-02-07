@@ -69,7 +69,7 @@ void Note::addNote(string _text, NoteTypes _noteType)
 void Note::addNote(string _text, string _path, NoteTypes _noteType)
 {
 	Note* newNote = new Note(_text, _noteType);
-	newNote->setText(_path);
+	newNote->setPath(_path);
 	notes.push_back(newNote);
 }
 
