@@ -176,11 +176,21 @@ int main() /* Pseudo UI */
 				}
 				catch (invalid_argument &x)
 				{
-					cout << "Cant convert!" << endl;
+					cout << "Can't convert!" << endl;
 					break;
 				}
 
-				if (!rootNote->removeNote(selectedElement, path))
+				if (selectedElement == -1)
+				{
+					string filepath = "./Org/" + rootNote->getPath();
+					if (remove(filepath.c_str()))
+					{
+						cout << "File " << rootNote->getText() << " does not exists!";
+					}
+					delete rootNote;
+					isInit = false;
+				}
+				else if (!rootNote->removeNote(selectedElement, path))
 				{
 					cout << "This note is absent." << endl;
 				}
