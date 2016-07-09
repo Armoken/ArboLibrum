@@ -19,6 +19,7 @@
 #include <stdexcept>
 #include "lib/include/note.h"
 #include "lib/include/writeorg.h"
+#include "lib/include/readorg.h"
 
 using namespace std;
 
@@ -29,7 +30,7 @@ int treeTravel(Note* rootNote, int level)
 	int elCount = rootNote->getCount();
 	if (level == 0)
 	{
-		cout << "\n Filename: " << rootNote->getText() << endl;
+		cout << "\nFilename: " << rootNote->getText() << endl;
 	}
 	else
 	{
@@ -85,19 +86,19 @@ int main() /* Pseudo UI */
 	{
 		int selection;
 
-		cout << "\n\n\n" << endl;
 		if (isInit)
 		{
 			treeTravel(rootNote, 0);
 		}
 
-		cout << "\n" << endl;
+		cout << "\n\n\n" << endl;
 		cout << "0) Quit" << endl;
 		cout << "1) Create note" << endl;
 		cout << "2) Rename note" << endl;
 		cout << "3) Create new node" << endl;
 		cout << "4) Delete node" << endl;
 		cout << "5) Save note to file" << endl;
+		cout << "6) Open note" << endl;
 		cout << "\n" << endl;
 
 		cin >> selection;
@@ -151,7 +152,12 @@ int main() /* Pseudo UI */
 				cin.ignore();
 				getline(cin, textPath);
 				path = parseTextPath(textPath);
-				if (!rootNote->addNote("This is example of text for testing work of the NEW STEP in world's notes editor direction!\nTRY AND ENJOY IT!!!\n________ArboLibrum________\n...\nIt's goddamn cool!", tText, path))
+				
+				string text;
+				cout << "Please, enter node's text: ";
+				getline(cin, text);
+
+				if (!rootNote->addNote(text, tText, path))
 				{
 					cout << "Wrong path!" << endl;
 				}
@@ -209,6 +215,17 @@ int main() /* Pseudo UI */
 			{
 				cout << "Please, create new note!" << endl;
 			}
+			break;
+		case 6:
+			string filename;
+			cout << "Enter note's title: ";
+			cin.ignore();
+			getline(cin, filename);
+			rootNote = ReadOrg::readNote(filename);
+			if (rootNote == NULL)
+				break;
+			isInit = true;
+			cout << "Note loaded!" << endl;
 			break;
 		}
 	}

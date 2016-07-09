@@ -14,7 +14,8 @@
 
 //****************************************************************************************************
 
-void WriteOrg::writeNote(Note* note) {
+void WriteOrg::writeNote(Note* note)
+{
 	const string orgDir = "./Org/";
 
 	if (note != NULL && note->getType() == tRoot)
