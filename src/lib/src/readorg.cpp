@@ -22,15 +22,55 @@ Note* ReadOrg::readNote(string noteOrg)
 {
 	Note* note;
 	string content;
+	string level = "**";
 	if ((content = loadOrgFile(noteOrg)).empty())
 		return NULL;
-	string delim = "**";
-	vector<string> elems = split(content, delim);
 
-	note = new Note(trim(elems[0].substr(1)), tText);
+	note = read(content, level, tRoot);
+	note->setPath(note->getText() + ".org");
+
+	return note;
+}
+
+Note* ReadOrg::read(string nodeContent, string level, NoteTypes type)
+{
+	string delim = level;
+	vector<string> elems = split(nodeContent, delim);
+	int index = 0, size = elems.size();
+
+	while (index < size)
+	{
+		if (elems[index] == "")
+		{
+			elems[index] += delim + elems[index + 1];
+			for (int j = index + 1; j < size - 1; j++)
+			{
+				elems[j] = elems[j + 1];
+			}
+			elems[size - 1].erase();
+			size--;
+		}
+		index++;
+	}
+
+	Note *note = new Note(trim(elems[0].substr(delim.length())), type);
+	Note* newNote;
+
 	for (int i = 1; i < elems.size(); i++)
 	{
-		note->addNote(trim(elems[i]), tText);
+		if (!elems[i].empty())
+		{
+			if (elems[i][0] == '*')
+			{
+				Note* innerNote = read(elems[i], delim, tText);
+				newNote->addNote(innerNote);
+			}
+			else
+			{
+				newNote = new Note(trim(elems[i]), tText);
+				note->addNote(newNote);
+			}
+		}
 	}
 
 	return note;

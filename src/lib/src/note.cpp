@@ -82,6 +82,12 @@ NoteTypes Note::getType()
 
 //****************************************************************************************************
 
+bool Note::addNote(Note* note)
+{
+	notes.push_back(note);
+	return true;
+}
+
 bool Note::addNote(string _text, NoteTypes _noteType)
 {
 	notes.push_back(new Note(_text, _noteType));

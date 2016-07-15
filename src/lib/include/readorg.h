@@ -29,6 +29,7 @@ class ReadOrg
 
 	 // Reading note from orgmode-like file
 	 static Note* readNote(string noteOrg);
+	 static Note* read(string nodeContent, string level, NoteTypes type);
 
 	 // Loading orgmode-like file's content
 	 static string loadOrgFile(string filename);
