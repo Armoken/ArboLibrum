@@ -14,134 +14,51 @@
 
 //****************************************************************************************************
 
-uint8_t Encryption::rj_xtime(uint8_t x)
+void Encryption::setKey(string _key)
 {
-	uint8_t y = (uint8_t)(x << 1);
-	return (x & 0x80) ? (y ^ 0x1b) : y;
-}
-
-void Encryption::aes_subBytes(uint8_t* buf)
-{
-	register uint8_t i = 16;
-
-	while (i--)
-		buf[i] = rj_sbox(buf[i]);
-}
-
-void Encryption::aes_addRoundKey(uint8_t* buf, uint8_t* key)
-{
-	register uint8_t i = 16;
-
-	while (i--)
-		buf[i] ^= key[i];
-}
-
-void Encryption::aes_addRoundKey_cpy(uint8_t* buf, uint8_t* key, uint8_t* cpk)
-{
-	register uint8_t i = 16;
-
-	while (i--)
-	{
-		buf[i] ^= (cpk[i] = key[i]);
-		cpk[16 + i] = key[16 + i];
-	}
-}
-
-void Encryption::aes_shiftRows(uint8_t* buf)
-{
-	register uint8_t i, j;
-
-	i = buf[1], buf[1] = buf[5], buf[5] = buf[9], buf[9] = buf[13], buf[13] = i;
-	i = buf[10], buf[10] = buf[2], buf[2] = i;
-
-	j = buf[3], buf[3] = buf[15], buf[15] = buf[11], buf[11] = buf[7], buf[7] = j;
-	j = buf[14], buf[14] = buf[6], buf[6] = j;
-}
-
-void Encryption::aes_mixColumns(uint8_t* buf)
-{
-	register uint8_t a, b, c, d, e;
-
-	for (uint8_t i = 0; i < 16; i += 4)
-	{
-		a = buf[i];
-		b = buf[i + 1];
-		c = buf[i + 2];
-		d = buf[i + 3];
-		e = a ^ b ^ c ^ d;
-		buf[i] ^= e ^ rj_xtime(a ^ b);
-		buf[i + 1] ^= e ^ rj_xtime(b ^ c);
-		buf[i + 2] ^= e ^ rj_xtime(c ^ d);
-		buf[i + 3] ^= e ^ rj_xtime(d ^ a);
-	}
-}
-
-void Encryption::aes_expandEncKey(uint8_t* k, uint8_t* rc)
-{
-	k[0] ^= rj_sbox(k[29]) ^ (*rc);
-	k[1] ^= rj_sbox(k[30]);
-	k[2] ^= rj_sbox(k[31]);
-	k[3] ^= rj_sbox(k[28]);
-	*rc = rj_xtime(*rc);
-
-	for (uint8_t i = 4; i < 16; i += 4)
-	{
-		k[i] ^= k[i - 4];
-		k[i + 1] ^= k[i - 3];
-		k[i + 2] ^= k[i - 2]; 
-		k[i + 3] ^= k[i - 1];
-	}
-
-	k[16] ^= rj_sbox(k[12]);
-	k[17] ^= rj_sbox(k[13]);
-	k[18] ^= rj_sbox(k[14]);
-	k[19] ^= rj_sbox(k[15]);
-
-	for (uint8_t i = 20; i < 32; i += 4)
-	{
-		k[i] ^= k[i - 4];
-		k[i + 1] ^= k[i - 3];
-		k[i + 2] ^= k[i - 2];
-		k[i + 3] ^= k[i - 1];
-	}
+	if (!_key.empty()) key = _key;
+	else key = "default";
 }
 
 //****************************************************************************************************
 
-void Encryption::aes256_init(AES256_Context* ctx, uint8_t* k)
+string Encryption::encrypt(string data)
 {
-	uint8_t rcon = 1;
-	register uint8_t i;
+	if (data.empty())
+		return data;
 
-	for (i = 0; i < sizeof(ctx->key); i++) ctx->enckey[i] = ctx->deckey[i] = k[i];
-	for (i = 8; --i;) aes_expandEncKey(ctx->deckey, &rcon);
+	const char* byteData = data.c_str();
+	const char* byteKey = key.c_str();
+	char* result = new char[data.length()];
+	string encryptedData = "";
+	encryptedData.resize(data.length());
+
+	for (int i = 0; i < data.length(); i++)
+		result[i] = (char)(byteData[i] ^ key[i % key.length()]);
+
+	for (int i = 0; i < encryptedData.length(); i++)
+		encryptedData[i] = result[i];
+
+	return encryptedData;
 }
 
-void Encryption::aes256_done(AES256_Context* ctx)
+string Encryption::decrypt(string encodedData)
 {
-	register uint8_t i;
+	if (encodedData.empty())
+		return encodedData;
 
-	for (i = 0; i < sizeof(ctx->key); i++)
-		ctx->key[i] = ctx->enckey[i] = ctx->deckey[i] = 0;
-}
+	const char* byteEncodedData = encodedData.c_str();
+	const char* byteKey = key.c_str();
+	char* result = new char[encodedData.length()];
+	string data = "";
 
-void Encryption::aes256_encrypt_ecb(AES256_Context* ctx, uint8_t *buf)
-{
-	uint8_t i, rcon;
+	for (int i = 0; i < encodedData.length(); i++)
+		result[i] = (char)(byteEncodedData[i] ^ key[i % key.length()]);
 
-	aes_addRoundKey_cpy(buf, ctx->enckey, ctx->key);
-	for (i = 1, rcon = 1; i < 14; ++i)
-	{
-		aes_subBytes(buf);
-		aes_shiftRows(buf);
-		aes_mixColumns(buf);
-		if (i & 1) aes_addRoundKey(buf, &ctx->key[16]);
-		else aes_expandEncKey(ctx->key, &rcon), aes_addRoundKey(buf, ctx->key);
-	}
-	aes_subBytes(buf);
-	aes_shiftRows(buf);
-	aes_expandEncKey(ctx->key, &rcon);
-	aes_addRoundKey(buf, ctx->key);
+	for (int i = 0; i < encodedData.length(); i++)
+		data += result[i];
+
+	return data;
 }
 
 //****************************************************************************************************

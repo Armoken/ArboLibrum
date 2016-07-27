@@ -14,44 +14,71 @@
 
 //****************************************************************************************************
 
-void WriteOrg::writeNote(Note* note)
+void WriteOrg::writeNote(Note* note, Encryption encryptor)
 {
 	const string orgDir = "./Org/";
+	string content = "";
 
 	if (note != NULL && note->getType() == tRoot)
 	{
-		string filename = orgDir + note->getPath();
-		ofstream out(filename, ios_base::trunc);
-
 		string level = "*";
 		string text = WriteOrg::addSpaces(note->getText(), level);
-		out << level << " " << text << endl;
+
+		content += level + " " + text + "\n";
+
 		if (note->getCount() != 0)
 		{
-			write(note, filename, level);
+			content = write(note, content, level);
 		}
-		out.close();
+
+		if (!content.empty())
+		{
+			string filename = orgDir + note->getPath();
+			ofstream out(filename, ios_base::trunc);
+			string encryptedContent = encryptor.encrypt(content);
+
+			out << encryptedContent;
+			out.close();
+		}
 	}
 }
 
-void WriteOrg::write(Note* note, string filename, string level)
+string WriteOrg::write(Note* note, string oldcontent, string level)
 {
-	ofstream out(filename, ios_base::app);
-	string text = "";
-	level += "*";
-
-	for (int i = 0; i < note->getCount(); i++)
+	if (note != NULL && note->getType() == tText)
 	{
-		text = WriteOrg::addSpaces(note->getNote(i)->getText(), level);
-		out << level << " " << text << endl;
-		string content = WriteOrg::loadContent(note->getNote(i));
-		out << content;
-		if (note->getNote(i)->getCount() != 0)
+		string text = "";
+		level += "*";
+
+		for (int i = 0; i < note->getCount(); i++)
 		{
-			WriteOrg::write(note->getNote(i), filename, level);
+			text = WriteOrg::addSpaces(note->getNote(i)->getText(), level);
+			oldcontent += level + " " + text + "\n";
+			string content = WriteOrg::loadContent(note->getNote(i)); // Maybe now it is useless
+			oldcontent += content;
+			if (note->getNote(i)->getCount() != 0)
+			{
+				oldcontent += WriteOrg::write(note->getNote(i), oldcontent, level);
+			}
 		}
 	}
-	out.close();
+	else if (note != NULL && note->getType() == tPicture)
+	{
+		string pictureLink = "";
+		level += "*";
+
+		for (int i = 0; i < note->getCount(); i++)
+		{
+			pictureLink = "[[" + note->getNote(i)->getText + "][" + note->getNote(i)->getPath + "]";
+			oldcontent += level + " " + pictureLink + "\n";
+			if (note->getNote(i)->getCount() != 0)
+			{
+				oldcontent += WriteOrg::write(note->getNote(i), oldcontent, level);
+			}
+		}
+	}
+
+	return oldcontent;
 }
 
 //****************************************************************************************************

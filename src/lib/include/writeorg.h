@@ -17,7 +17,9 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include "note.h"
+#include "encryption.h"
 
 using namespace std;
 
@@ -28,8 +30,8 @@ class WriteOrg
 public:
 
 	// Writing note to file in orgmode-like representation
-	static void writeNote(Note* note);
-	static void write(Note* note, string filename, string level);
+	static void writeNote(Note* note, Encryption encryptor);
+	static string write(Note* note, string oldcontent, string level);
 
 	// Loading content from note
 	static string loadContent(Note* note);

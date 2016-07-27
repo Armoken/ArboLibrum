@@ -20,6 +20,7 @@
 #include "lib/include/note.h"
 #include "lib/include/writeorg.h"
 #include "lib/include/readorg.h"
+#include "lib/include/encryption.h"
 
 using namespace std;
 
@@ -79,9 +80,20 @@ list<int> parseTextPath(string textPath)
 
 int main() /* Pseudo UI */
 {
+	Encryption encryptor;
 	Note* rootNote;
 	bool isAlive = true;
 	bool isInit = false;
+	string password = "";
+
+	cout << "Enter password: ";
+	cin >> password;
+
+	if (password.empty())
+		password = "default";
+
+	encryptor.setKey(password);
+
 	while (isAlive)
 	{
 		int selection;
@@ -209,7 +221,7 @@ int main() /* Pseudo UI */
 		case 5:
 			if (isInit)
 			{
-				WriteOrg::writeNote(rootNote);
+				WriteOrg::writeNote(rootNote, encryptor);
 			}
 			else
 			{
@@ -221,7 +233,7 @@ int main() /* Pseudo UI */
 			cout << "Enter note's title: ";
 			cin.ignore();
 			getline(cin, filename);
-			rootNote = ReadOrg::readNote(filename);
+			rootNote = ReadOrg::readNote(filename, encryptor);
 			if (rootNote == NULL)
 				break;
 			isInit = true;

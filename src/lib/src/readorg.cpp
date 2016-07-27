@@ -18,12 +18,12 @@
 
 //****************************************************************************************************
 
-Note* ReadOrg::readNote(string noteOrg)
+Note* ReadOrg::readNote(string noteOrg, Encryption encryptor)
 {
 	Note* note;
 	string content;
 	string level = "**";
-	if ((content = loadOrgFile(noteOrg)).empty())
+	if ((content = loadOrgFile(noteOrg, encryptor)).empty())
 		return NULL;
 
 	note = read(content, level, tRoot);
@@ -78,12 +78,13 @@ Note* ReadOrg::read(string nodeContent, string level, NoteTypes type)
 
 //****************************************************************************************************
 
-string ReadOrg::loadOrgFile(string filename)
+string ReadOrg::loadOrgFile(string filename, Encryption encryptor)
 {
 	filename = "./Org/" + filename + ".org";
 
 	ifstream in(filename);
-	string content;
+	string encryptedContent = "";
+	string decryptedContent = "";
 
 	if (!in.is_open())
 	{
@@ -91,10 +92,12 @@ string ReadOrg::loadOrgFile(string filename)
 		return string();
 	}
 
-	copy(istreambuf_iterator<char>(in), istreambuf_iterator<char>(), back_inserter(content));
+	copy(istreambuf_iterator<char>(in), istreambuf_iterator<char>(), back_inserter(encryptedContent));
 	in.close();
 
-	return content;
+	decryptedContent = encryptor.decrypt(encryptedContent);
+
+	return decryptedContent;
 }
 
 //****************************************************************************************************
