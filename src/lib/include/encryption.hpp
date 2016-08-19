@@ -15,14 +15,25 @@
 #ifndef ENCRYPTION_HPP
 #define ENCRYPTION_HPP
 
+#include "math.h"
+#include <string>
+#include <iostream>
+
 using namespace std;
 
 //****************************************************************************
 
 class Encryption
 {
+private:
+	string key; /* Encryption key */
 public:
-	Encryption();
+	// Setting on encryption key
+	void setKey(string _key);
+
+	// Data encryption/decryption
+	string encrypt(string data);
+	string decrypt(string encodedData);
 };
 
 #endif // ENCRYPTION_HPP

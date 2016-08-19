@@ -70,7 +70,13 @@ NoteTypes Note::getType()
 	return (NoteTypes)this->noteType;
 }
 
-bool Note::addNote(string text, NoteTypes noteType)
+bool Note::addNote(Note* note)
+{
+	notes.push_back(note);
+	return true;
+}
+
+bool Note::addNote(string _text, NoteTypes _noteType)
 {
 	notes.push_back(new Note(text, noteType));
 	return true;

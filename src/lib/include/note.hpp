@@ -73,6 +73,7 @@ public:
 
 	// Add new note to inner array
 	// The path to the Note is an array of int, which show position of Note in notes array
+	bool addNote(Note* note);
 	bool addNote(string text, NoteTypes noteType);
 	bool addNote(string text, string path, NoteTypes noteType);
 	bool addNote(string text, NoteTypes noteType, list<int> pathToNote);
