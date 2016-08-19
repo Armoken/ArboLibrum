@@ -10,8 +10,8 @@ set (SOURCE_LIB
 	src/decompression.cpp
 	src/encryption.cpp
 	src/encryption.cpp
-	src/readorg.cpp
-	src/writeorg.cpp)
+	src/readnote.cpp
+	src/writenote.cpp)
 
 include_directories (include)
 

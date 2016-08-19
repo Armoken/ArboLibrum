@@ -1,4 +1,4 @@
-﻿/*****************************************************************************************************
+﻿/*****************************************************************************
 
 ███████████████████████████████████████████████████
 █────█────█────██────█─███───█────██────█─█─█─███─█
@@ -6,24 +6,26 @@
 █────█────█────██─██─█─████─██────██────█─█─█─█─█─█
 █─██─█─█─██─██──█─██─█─████─██─██──█─█─██─█─█─███─█
 █─██─█─█─██────██────█───█───█────██─█─██───█─███─█
-███████████████████████████████████████████████████  (c) ArboLibrum, 2016. All rights reserved.
+███████████████████████████████████████████████████
 
-*****************************************************************************************************/
+(c) ArboLibrum, 2016. All rights reserved.
 
-#ifndef NOTE_H
-#define NOTE_H
+*****************************************************************************/
 
-//****************************************************************************************************
+#ifndef NOTE_HPP
+#define NOTE_HPP
 
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <vector>
+//****************************************************************************
+
 #include <list>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 
-//****************************************************************************************************
+//****************************************************************************
 
 // Available note types
 enum NoteTypes
@@ -46,7 +48,7 @@ private:
 public:
 	vector<Note*> notes; /* Array of notes */
 
-	Note(string _text, NoteTypes _noteType);
+	Note(string text, NoteTypes noteType);
 	~Note();
 
 	// Get inner note by number
@@ -56,11 +58,11 @@ public:
 	}
 
 	// Set/get note's content
-	bool setText(string _text);
+	bool setText(string text);
 	string getText();
 
 	// Set/get path to note's content file
-	bool setPath(string _path);
+	bool setPath(string path);
 	string getPath();
 
 	// Returns notes' size
@@ -70,20 +72,22 @@ public:
 	NoteTypes getType();
 
 	// Add new note to inner array
-	// The _path to the Note is an array of int, which show position of Note in notes array
-	bool addNote(string _text, NoteTypes _noteType);
-	bool addNote(string _text, string _path, NoteTypes _noteType);
-	bool addNote(string _text, NoteTypes _noteType, list<int> _pathToNote);
-	bool addNote(string _text, string _path, NoteTypes _noteType, list<int> _pathToNote);
+	// The path to the Note is an array of int, which show position of Note in notes array
+	bool addNote(string text, NoteTypes noteType);
+	bool addNote(string text, string path, NoteTypes noteType);
+	bool addNote(string text, NoteTypes noteType, list<int> pathToNote);
+	bool addNote(string text, string path, NoteTypes noteType, list<int> pathToNote);
 
 	// Get note from inner array by it's number
-	Note* getNote(int _number); 
-	Note* getNote(int _number, list<int> _pathToNote);
+	Note* getNote(int number);
+	Note* getNote(int number, list<int> pathToNote);
 
 	// Remove current note and additional content file
-	bool removeNote(int _number);
-	bool removeNote(int _number, list<int> _pathToNote);
+	bool removeNote(int number);
+	bool removeNote(int number, list<int> pathToNote);
+	bool removeNote(list<int> pathToNote);
 };
-#endif // NOTE_H
 
-//****************************************************************************************************
+#endif // NOTE_HPP
+
+//****************************************************************************

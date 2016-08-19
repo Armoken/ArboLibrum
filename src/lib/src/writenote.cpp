@@ -12,10 +12,9 @@
 
 ******************************************************************************/
 
-#include "../include/compression.hpp"
+#include "../include/writenote.hpp"
 
-//*****************************************************************************
-
-Compression::Compression()
+bool WriteNote::writeNote(Note* note, string path)
 {
+	return false;
 }
