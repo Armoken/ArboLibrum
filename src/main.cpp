@@ -178,13 +178,12 @@ pair<bool, Note *> callActionFunc(Note *note, map<int, actionFunc> actionDict)
 		{
 			return actionDict[selectedOption](note);
 		}
-
-		return make_pair(true, nullptr);
 	}
 	catch(boost::bad_lexical_cast const&)
 	{
 		cout << "Error: input string was not valid" << endl;
 	}
+	return make_pair(true, nullptr);
 }
 
 Note* UI(map<int, actionFunc> actionDict, void (*UIFunc)(), Note *rootNote)
