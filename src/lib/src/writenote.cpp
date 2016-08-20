@@ -12,9 +12,9 @@
 
 ******************************************************************************/
 
-#include "../include/writenote.hpp"
+#include "../include/serialization.hpp"
 
-bool WriteNote::writeNote(Note* note, string path)
+bool Serializer::writeNote(Note* note, string path)
 {
 	return false;
 }

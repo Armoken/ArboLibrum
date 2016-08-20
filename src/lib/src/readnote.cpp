@@ -12,11 +12,11 @@
 
 *****************************************************************************/
 
-#include "../include/readnote.hpp"
+#include "../include/serialization.hpp"
 
 //****************************************************************************
 
-string ReadNote::findFile(string filename)
+string Serializer::findFile(string filename)
 {
 	if (ifstream(filename))
 	{
@@ -32,9 +32,9 @@ string ReadNote::findFile(string filename)
 	}
 }
 
-string ReadNote::loadNoteFile(string filename)
+string Serializer::loadNoteFile(string filename)
 {
-	string fullPathToFile = ReadNote::findFile(filename);
+	string fullPathToFile = Serializer::findFile(filename);
 	if (fullPathToFile.empty())
 	{
 		cout << "Such note does not exists!" << endl;
@@ -47,9 +47,9 @@ string ReadNote::loadNoteFile(string filename)
 	return strStream.str();
 }
 
-Note* ReadNote::parseNoteFile(string filename)
+Note* Serializer::parseNoteFile(string filename)
 {
-	auto content = ReadNote::loadNoteFile(filename);
+	auto content = Serializer::loadNoteFile(filename);
 	if (content.empty())
 	{
 		return NULL;

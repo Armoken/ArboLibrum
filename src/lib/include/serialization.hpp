@@ -12,8 +12,8 @@
 
 *****************************************************************************/
 
-#ifndef READNOTE_HPP
-#define READNOTE_HPP
+#ifndef SERIALIZATION_HPP
+#define SERIALIZATION_HPP
 
 //****************************************************************************
 
@@ -25,15 +25,15 @@
 #include <algorithm>
 #include "note.hpp"
 
-#include "../include/note.hpp"
-
 using namespace std;
 
 //****************************************************************************
 
-class ReadNote
+class Serializer
 {
 public:
+	static bool writeNote(Note* note, string path);
+
 	// File can be in current dir or in ./Org dir or somewhere else
 	static string findFile(string filename);
 
@@ -43,6 +43,6 @@ public:
 	static Note* parseNoteFile(string noteOrg);
 };
 
-#endif // READNOTE_HPP
+#endif // SERIALIZATION_HPP
 
 //****************************************************************************

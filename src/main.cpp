@@ -26,8 +26,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include "lib/include/note.hpp"
-#include "lib/include/readnote.hpp"
-#include "lib/include/writenote.hpp"
+#include "lib/include/serialization.hpp"
 
 using namespace std;
 
@@ -105,7 +104,7 @@ pair<bool, Note *> quitProgram(Note *note)
 pair<bool, Note *> readNoteFromFile(Note *note)
 {
 	cout << "Enter note's filename: ";
-	note = ReadNote::parseNoteFile(input(true));
+	note = Serializer::parseNoteFile(input(true));
 	if (note != nullptr)
 	{
 		cout << "Note loaded!" << endl;
@@ -131,7 +130,7 @@ pair<bool, Note *> createNode(Note *note)
 
 	cout << "Please, enter node's text: ";
 	string text = input(true);
-	if (not note->addNote(text, tText, path))
+	if (!note->addNote(text, tText, path))
 	{
 		cout << "Wrong path!" << endl;
 	}
@@ -157,7 +156,7 @@ pair<bool, Note *> removeNode(Note *note)
 pair<bool, Note *> saveNoteToFile(Note *note)
 {
 	cout << "Please, input path for note saving: " << endl;
-	if (WriteNote::writeNote(note, input(true)))
+	if (Serializer::writeNote(note, input(true)))
 	{
 		cout << "Note was successfully written!" << endl;
 	}
