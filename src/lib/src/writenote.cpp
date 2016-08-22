@@ -45,6 +45,28 @@ string Serializer::getTagType(NoteTypes type)
 	else return "unknown";
 }
 
+string Serializer::replaceSubstr(string str, const string& from, const string& to)
+{
+	size_t start_pos = 0;
+	while ((start_pos = str.find(from, start_pos)) != string::npos)
+	{
+		str.replace(start_pos, from.length(), to);
+		start_pos += to.length();
+	}
+	return str;
+}
+
+string Serializer::decorateSymbols(string line)
+{
+	line = replaceSubstr(line, string(" "), string("&nbsp;"));
+	line = replaceSubstr(line, string("<"), string("&lt;"));
+	line = replaceSubstr(line, string(">"), string("&gt;"));
+	line = replaceSubstr(line, string("\n"), string("&nl;"));
+	line = replaceSubstr(line, string("\t"), string("&tb;"));
+	line = replaceSubstr(line, string("\r"), string("&rr;"));
+	return line;
+}
+
 string Serializer::serialize(Note* rootNote)
 {
 	if (rootNote->getType() != tRoot)
@@ -57,7 +79,7 @@ string Serializer::serialize(Note* rootNote)
 	arbml_doc += indent + "<" + getTagType(rootNote->getType()) + ">\n";
 
 	arbml_doc += level + "<title>\n";
-	arbml_doc += level + indent + rootNote->getText() + "\n";
+	arbml_doc += level + indent + Serializer::decorateSymbols(rootNote->getText()) + "\n";
 	arbml_doc += level + "</title>\n";
 
 	if (rootNote->getCount() != 0)
@@ -88,7 +110,7 @@ string Serializer::serialize(Note* note, NoteTypes type, string level)
 	innerLevel += indent;
 
 	arbml_doc += innerLevel + "<content>\n";
-	arbml_doc += innerLevel + indent + note->getText() + "\n";
+	arbml_doc += innerLevel + indent + Serializer::decorateSymbols(note->getText()) + "\n";
 	arbml_doc += innerLevel + "</content>\n";
 
 	if (note->getCount() != 0)

@@ -32,6 +32,34 @@ using namespace std;
 class Serializer
 {
 public:
+	struct RemoveDelimiter
+	{
+		bool operator()(char c)
+		{
+			return (c == ' ' || c == '\t' || c == '\n' || c == '\r');
+		}
+	};
+
+	class Cursor
+	{
+	public:
+		int pos = 0;
+		string tag = "";
+		bool isClosing = false;
+	};
+
+	static Cursor* getTag(string arbml_doc, Cursor* cursor);
+	static pair<string, Cursor*> getContent(string arbml_doc, Cursor* cursor);
+
+	// Replacing one substring to another
+	static string replaceSubstr(string str, const string& from, const string& to);
+
+	// Replace special symbols to their mnemonics
+	static string decorateSymbols(string line);
+
+	// Replace mnemonics to according special symbols
+	static string undecorateSymbols(string line);
+
 	/*---SAVING---*/
 
 	// Save a note to .arbml file
@@ -53,6 +81,9 @@ public:
 
 	// Reading note from html-like file
 	static Note* parseNoteFile(string noteOrg);
+	static Note* parse(string content);
+
+	static string clearWhitespace(string content);
 };
 
 #endif // SERIALIZATION_HPP
