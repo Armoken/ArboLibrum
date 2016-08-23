@@ -110,7 +110,7 @@ pair<bool, Note *> readNoteFromFile(Note *note)
 		cout << "Note loaded!" << endl;
 		return make_pair(true, note);
 	}
-	cout << "Wrong path!" << endl;
+	cout << "Wrong path or damaged note!" << endl;
 	return make_pair(false, note);
 }
 

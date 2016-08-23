@@ -49,14 +49,12 @@ string Serializer::loadNoteFile(string filename)
 
 Note* Serializer::parseNoteFile(string filename)
 {
-	// Just for test
-	filename += "kek.arbml";
-
 	auto content = Serializer::loadNoteFile(filename);
 	if (content.empty())
 	{
 		return NULL;
 	}
+
 	content = clearWhitespace(content);
 	Serializer::Cursor* cursor = new Serializer::Cursor();
 	cursor = Serializer::getTag(content, cursor);
@@ -68,7 +66,6 @@ Note* Serializer::parseNoteFile(string filename)
 		return NULL;
 
 	Note* rootNote;
-
 	cursor = Serializer::getTag(content, cursor);
 	if (cursor->tag != "title" | cursor->isClosing)
 		return NULL;
@@ -86,7 +83,7 @@ Note* Serializer::parseNoteFile(string filename)
 	cursor = Serializer::getTag(content, cursor);
 	if (cursor->tag == "nodes" & !cursor->isClosing)
 	{
-		//TODO: Parsing inner notes
+		rootNote->notes = Serializer::parse(content, cursor);
 		cursor = Serializer::getTag(content, cursor);
 	}
 
@@ -122,8 +119,10 @@ Serializer::Cursor* Serializer::getTag(string arbml_doc, Serializer::Cursor* cur
 {
 	if (arbml_doc[cursor->pos] != '<')
 		cursor->pos++;
+
 	if (arbml_doc[cursor->pos] != '<')
 		return NULL;
+
 	int cur_pos = cursor->pos;
 	while (arbml_doc[cur_pos] != '>') cur_pos++;
 	string tag = arbml_doc.substr(cursor->pos + 1, cur_pos - cursor->pos - 1);
@@ -135,9 +134,43 @@ Serializer::Cursor* Serializer::getTag(string arbml_doc, Serializer::Cursor* cur
 	return cursor;
 }
 
-Note* Serializer::parse(string content)
+vector<Note*> Serializer::parse(string arbml_doc, Serializer::Cursor* cursor)
 {
-	return NULL;
+	vector<Note*> nodes = vector<Note*>();
+
+	while (cursor->tag != "nodes" | !cursor->isClosing)
+	{
+		cursor = Serializer::getTag(arbml_doc, cursor);
+		if ((cursor->tag == "text" || cursor->tag == "picture") & !cursor->isClosing)
+		{
+			NoteTypes type = cursor->tag == "text" ? tText : tPicture;
+			cursor = Serializer::getTag(arbml_doc, cursor);
+			if (cursor->tag != "content" | cursor->isClosing)
+				return vector<Note*>();
+
+			pair<string, Serializer::Cursor*> content = Serializer::getContent(arbml_doc, cursor);
+			Note* note = new Note(Serializer::undecorateSymbols(content.first), type);
+			cursor = content.second;
+
+			cursor = Serializer::getTag(arbml_doc, cursor);
+			if (cursor->tag != "content" | !cursor->isClosing)
+				return vector<Note*>();
+
+			cursor = Serializer::getTag(arbml_doc, cursor);
+			if (cursor->tag == "nodes" & !cursor->isClosing)
+			{
+				note->notes = Serializer::parse(arbml_doc, cursor);
+				cursor = Serializer::getTag(arbml_doc, cursor);
+			}
+
+			if ((cursor->tag != "text" && cursor->tag != "picture") | !cursor->isClosing)
+				return vector<Note*>();
+
+			nodes.push_back(note);
+		}
+	}
+
+	return nodes;
 }
 
 string Serializer::undecorateSymbols(string line)

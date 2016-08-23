@@ -32,6 +32,8 @@ using namespace std;
 class Serializer
 {
 public:
+
+	// String delimiters to remove
 	struct RemoveDelimiter
 	{
 		bool operator()(char c)
@@ -40,15 +42,19 @@ public:
 		}
 	};
 
+	// Parsing cursor
 	class Cursor
 	{
 	public:
-		int pos = 0;
-		string tag = "";
-		bool isClosing = false;
+		int pos = 0; /* Position in document (line) */
+		string tag = ""; /* The nearest tag, inside of which there is a cursor */
+		bool isClosing = false; /* Whether tag is closing */
 	};
 
+	// Get next tag in document (line)
 	static Cursor* getTag(string arbml_doc, Cursor* cursor);
+
+	// Get note's content enclosed in tags
 	static pair<string, Cursor*> getContent(string arbml_doc, Cursor* cursor);
 
 	// Replacing one substring to another
@@ -68,7 +74,7 @@ public:
 	// Get text representation of note's type for arbml tag
 	static string getTagType(NoteTypes type);
 
-	// Converting note into an arbml format
+	// Convert note into an arbml format
 	static string serialize(Note* rootNote);
 	static string serialize(Note* note, NoteTypes type, string level);
 
@@ -77,12 +83,14 @@ public:
 	// File can be in current dir or in ./Org dir or somewhere else
 	static string findFile(string filename);
 
+	// Load file's content
 	static string loadNoteFile(string filename);
 
-	// Reading note from html-like file
+	// Read note from html-like file
 	static Note* parseNoteFile(string noteOrg);
-	static Note* parse(string content);
+	static vector<Note*> parse(string arbml_doc, Cursor* cursor);
 
+	// Remove string delimiters
 	static string clearWhitespace(string content);
 };
 
